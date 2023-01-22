@@ -36,8 +36,8 @@ app.MapGet("/api/todo", async (CancellationToken cancellationToken) =>
 });
 
 app.MapPut("/api/todo",
-    async (string todoId, CancellationToken cancellationToken) => await todoCollection
-            .FindOneAndUpdateAsync(
+    async (string todoId, CancellationToken cancellationToken) => 
+        await todoCollection.FindOneAndUpdateAsync(
                 todo => todo.Id == ObjectId.Parse(todoId), 
                 Builders<Todo>.Update.Set(todo => todo.Done, true), 
                 cancellationToken: cancellationToken));
@@ -48,7 +48,6 @@ app.MapPost("/api/todo",
             Todo.FromDescription(todoViewModel.Description), 
             cancellationToken: cancellationToken));
 
-//app.Lifetime.ApplicationStopped.Register(() => mongoContainer.StopAsync().RunSynchronously());
 app.Run();
 
 internal record Todo(ObjectId Id, string Description, bool Done)
@@ -57,14 +56,10 @@ internal record Todo(ObjectId Id, string Description, bool Done)
         => new (ObjectId.GenerateNewId(), description, false);
 }
 
-internal record TodoViewModel(
-    string Id,
-    string Description,
-    bool Done)
+internal record TodoViewModel(string Id, string Description, bool Done)
 {
     public static TodoViewModel FromTodo(Todo todo)
         => new (todo.Id.ToString(), todo.Description, todo.Done);
 };
 
-record CreateTodoViewModel(
-    string Description); 
+record CreateTodoViewModel(string Description); 
