@@ -16,9 +16,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+      <Folder Include="wwwroot" />
     </ItemGroup>
+
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+      <Exec Command="Remove-Item .\\wwwroot -Recurse&#xA;npm run serverBuild --prefix ./../TodoApp.UI" />
+    </Target>
 
 </Project>

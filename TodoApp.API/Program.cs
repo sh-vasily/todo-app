@@ -26,6 +26,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.MapGet("/api/todo", async (CancellationToken cancellationToken) =>
 {
     var todos = await todoCollection
@@ -35,7 +38,7 @@ app.MapGet("/api/todo", async (CancellationToken cancellationToken) =>
     return todos.Select(TodoViewModel.FromTodo);
 });
 
-app.MapPut("/api/todo",
+app.MapPut("/api/todo/{todoId}",
     async (string todoId, CancellationToken cancellationToken) => 
         await todoCollection.FindOneAndUpdateAsync(
                 todo => todo.Id == ObjectId.Parse(todoId), 
