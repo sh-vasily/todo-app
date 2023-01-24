@@ -1,11 +1,15 @@
 using DotNet.Testcontainers.Builders;
+using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Containers;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
+var projectDirectory = Directory.GetParent(Environment.CurrentDirectory)?.Parent?.Parent?.FullName;
+
 var mongoContainer = new TestcontainersBuilder<MongoDbTestcontainer>()
     .WithImage("mongo")
     .WithPortBinding(27017)
+    .WithBindMount($@"{projectDirectory}\data", "/data/db", AccessMode.ReadWrite)
     .Build();
 
 await mongoContainer.StartAsync();
