@@ -52,21 +52,21 @@ app.MapPut("/api/todo/{todoId}",
 app.MapPost("/api/todo",
     async (CreateTodoViewModel todoViewModel, CancellationToken cancellationToken) => 
         await todoCollection.InsertOneAsync(
-            Todo.FromDescription(todoViewModel.Description), 
+            Todo.FromViewModel(todoViewModel), 
             cancellationToken: cancellationToken));
 
 app.Run();
 
-internal record Todo(ObjectId Id, string Description, bool Done)
+internal record Todo(ObjectId Id, string Description, bool Done, string? Comment = null)
 {
-    public static Todo FromDescription(string description)
-        => new (ObjectId.GenerateNewId(), description, false);
+    public static Todo FromViewModel(CreateTodoViewModel createTodoViewModel)
+        => new (ObjectId.GenerateNewId(), createTodoViewModel.Description, false, createTodoViewModel.Comment);
 }
 
-internal record TodoViewModel(string Id, string Description, bool Done)
+internal record TodoViewModel(string Id, string Description, bool Done, string? Comment = null)
 {
     public static TodoViewModel FromTodo(Todo todo)
-        => new (todo.Id.ToString(), todo.Description, todo.Done);
+        => new (todo.Id.ToString(), todo.Description, todo.Done, todo.Comment);
 };
 
-record CreateTodoViewModel(string Description); 
+record CreateTodoViewModel(string Description, string Comment); 
