@@ -7,6 +7,10 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "TodoApp.UI", "TodoApp.UI\To
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.API", "TodoApp.API\TodoApp.API.csproj", "{214C9697-4AAB-4A38-A6C7-7E0B41B04D2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Bot", "TodoApp.Bot\TodoApp.Bot.csproj", "{5436DF6B-1A5B-4CEA-A94E-55373374383F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Contracts", "TodoApp.Contracts\TodoApp.Contracts.csproj", "{ACA8884A-C57D-4D05-837C-BAB1DEFB3CAF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +27,14 @@ Global
 		{214C9697-4AAB-4A38-A6C7-7E0B41B04D2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{214C9697-4AAB-4A38-A6C7-7E0B41B04D2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{214C9697-4AAB-4A38-A6C7-7E0B41B04D2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5436DF6B-1A5B-4CEA-A94E-55373374383F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5436DF6B-1A5B-4CEA-A94E-55373374383F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5436DF6B-1A5B-4CEA-A94E-55373374383F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5436DF6B-1A5B-4CEA-A94E-55373374383F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACA8884A-C57D-4D05-837C-BAB1DEFB3CAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACA8884A-C57D-4D05-837C-BAB1DEFB3CAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACA8884A-C57D-4D05-837C-BAB1DEFB3CAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACA8884A-C57D-4D05-837C-BAB1DEFB3CAF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

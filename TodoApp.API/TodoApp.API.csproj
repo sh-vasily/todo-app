@@ -16,11 +16,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="wwwroot" />
+      <ProjectReference Include="..\TodoApp.Contracts\TodoApp.Contracts.csproj" />
     </ItemGroup>
-
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-      <Exec Command="Remove-Item .\\wwwroot -Recurse&#xA;npm run serverBuild --prefix ./../TodoApp.UI" />
+    
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="'$(Configuration)' == 'Release' ">
+      <Exec Command="npm run serverBuild --prefix ./../TodoApp.UI" />
     </Target>
 
 </Project>
