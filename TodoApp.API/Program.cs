@@ -3,6 +3,7 @@ using DotNet.Testcontainers.Configurations;
 using DotNet.Testcontainers.Containers;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using TodoApp.Contracts;
 
 var projectDirectory = Directory.GetParent(Environment.CurrentDirectory)?.Parent?.Parent?.FullName;
 
@@ -24,11 +25,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -39,15 +37,23 @@ app.MapGet("/api/todo", async (CancellationToken cancellationToken) =>
         .Find(_ => true)
         .ToListAsync(cancellationToken);
     
-    return todos.Select(TodoViewModel.FromTodo);
+    return todos.Select(todo => todo.ToViewModel());
 });
 
 app.MapPut("/api/todo/{todoId}",
-    async (string todoId, CancellationToken cancellationToken) => 
-        await todoCollection.FindOneAndUpdateAsync(
-                todo => todo.Id == ObjectId.Parse(todoId), 
-                Builders<Todo>.Update.Set(todo => todo.Done, true), 
-                cancellationToken: cancellationToken));
+    async (string todoId, CancellationToken cancellationToken) =>
+    {
+        var todo = await todoCollection.FindOneAndUpdateAsync(
+            Builders<Todo>.Filter.Where(todo => todo.Id == ObjectId.Parse(todoId)),
+            Builders<Todo>.Update.Set(todo => todo.Done, true),
+            new FindOneAndUpdateOptions<Todo>
+            {
+                ReturnDocument = ReturnDocument.After,
+            },
+            cancellationToken);
+        
+        return todo.ToViewModel();
+    });
 
 app.MapPost("/api/todo",
     async (CreateTodoViewModel todoViewModel, CancellationToken cancellationToken) => 
@@ -63,10 +69,8 @@ internal record Todo(ObjectId Id, string Description, bool Done, string? Comment
         => new (ObjectId.GenerateNewId(), createTodoViewModel.Description, false, createTodoViewModel.Comment);
 }
 
-internal record TodoViewModel(string Id, string Description, bool Done, string? Comment = null)
+internal static class TodoExtensions
 {
-    public static TodoViewModel FromTodo(Todo todo)
+    public static TodoViewModel ToViewModel(this Todo todo)
         => new (todo.Id.ToString(), todo.Description, todo.Done, todo.Comment);
-};
-
-record CreateTodoViewModel(string Description, string Comment); 
+}       
