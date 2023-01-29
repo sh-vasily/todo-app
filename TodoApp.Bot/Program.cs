@@ -35,6 +35,8 @@ var handlers =
     new List<string> { Commands.MarkDone, Commands.AllTodos, Commands.AddTodo }
     .ToDictionary(cmd => cmd, cmd => commandHandlersFactory.CreateInstance(cmd));
 
+var defaultHandler = commandHandlersFactory.CreateInstance();
+
 botClient.StartReceiving(
     HandleUpdateAsync,
     HandlePollingErrorAsync,
@@ -66,18 +68,8 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
     Console.WriteLine($"Received a '{messageText}' message in chat {chatId}.");
 
     var commandText = update.Message?.Text.ToLower().Split(" ").First();
-
-    if (handlers.TryGetValue(commandText, out var handler))
-    {
-        await handler.Handle(update, cancellationToken);
-    }
-    else
-    {
-        await botClient.SendTextMessageAsync(
-            chatId,
-            "Эта команда пока не поддерживается:\n" + messageText,
-            cancellationToken: cancellationToken);
-    }
+    var handler = handlers.GetValueOrDefault(commandText, defaultHandler);
+    await handler.Handle(update, cancellationToken);
 }
 
 Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)

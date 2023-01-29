@@ -13,11 +13,12 @@ internal sealed class CommandHandlersFactory
         _httpClient = httpClient;
     }
 
-    internal ICommandHandler CreateInstance(string command)
+    internal ICommandHandler CreateInstance(string command = "")
         => command switch
         {
             Commands.MarkDone => new MarkDoneHandler(_httpClient, _telegramBotClient),
             Commands.AllTodos => new GetAllTodoHandler(_httpClient, _telegramBotClient),
             Commands.AddTodo => new AddTodoHandler(_httpClient, _telegramBotClient),
+            _ => new DefaultHandler(_telegramBotClient),
         };
 }
