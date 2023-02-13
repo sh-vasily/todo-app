@@ -100,5 +100,5 @@ internal record Todo(ObjectId Id,
 internal static class TodoExtensions
 {
     public static TodoViewModel ToViewModel(this Todo todo)
-        => new (todo.Id.ToString(), todo.Description, todo.Done, todo.Comment);
+        => new (todo.Id.ToString(), todo.Description, todo.Done, todo.Comment, todo.Tags);
 }       

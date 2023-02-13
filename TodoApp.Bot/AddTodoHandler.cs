@@ -22,7 +22,7 @@ internal sealed class AddTodoHandler : ICommandHandler
 
         await _httpClient.PostAsJsonAsync(
             "http://localhost:80/api/todo", 
-            new CreateTodoViewModel(todoDescription, string.Empty),
+            new CreateTodoViewModel(todoDescription, string.Empty, Array.Empty<string>()),
             cancellationToken);
 
         await _telegramBotClient.SendTextMessageAsync(
