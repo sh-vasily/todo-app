@@ -34,14 +34,11 @@ app.UseSwaggerUI();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-app.MapGet("/api/tags", async (CancellationToken cancellationToken) =>
-{
-    await todoCollection
+app.MapGet("/api/tags", async (CancellationToken cancellationToken) => await todoCollection
         .AsQueryable()
         .SelectMany(todo => todo.Tags)
         .Distinct()
-        .ToListAsync(cancellationToken);
-});
+        .ToListAsync(cancellationToken));
 
 app.MapGet("/api/todo", async ([FromQuery]string[] tags, CancellationToken cancellationToken) =>
 {
